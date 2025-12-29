@@ -6,6 +6,10 @@ useState 를 이용하여 상태 전환
 state변경함수 특징
 기존state == 신규state 의 경우 변경안함
 
+git은 master, github는 main
+
+정렬, 컴포넌트 문법
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
