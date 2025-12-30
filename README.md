@@ -1,14 +1,19 @@
 # Getting Started with Create React App
 
+"react": "^19.2.3",
+리액트버전 package.json에 있음
+
 연습 리액트 블로그 만들기
 useState 를 이용하여 상태 전환
 
 state변경함수 특징
 기존state == 신규state 의 경우 변경안함
 
-git은 master, github는 main
-
 정렬, 컴포넌트 문법
+
+자바스크립트의 map 함수 array 자료 우측에 map()함수를 붙이면 자료갯수만큼 코드 반복실행
+
+props는 하위 개체에게 함수값, 상태값 등을 전달
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

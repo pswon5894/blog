@@ -8,7 +8,11 @@ function App() {
   let [a, b] = useState('남자 코트 추천')
   let [logo, setLogo] = useState('ReactBlog');
   let [글제목, 글제목변경] =useState(['남자 코트 추천', '강남 우동맛집', '파이썬독학'])
-  let [추천, 추천변경] =useState(0);
+  let [추천, 추천변경] =useState([0,0,0]);
+  let [counter, counterChange] = useState(0);
+  let [modal, setModal] = useState(false);
+  let [title, setTitle] = useState(0);
+  let [입력값, 입력값변경] = useState(' ');
 
   // function 함수(){
   //   console.log(1);
@@ -29,20 +33,14 @@ function App() {
       스프레드 문법이나 map, filter 등을 사용해 새로운 배열/객체를 만들어야 react가 상태변화를 인지하고
       컴포넌트를 다시 렌더링 */}
 
-      {/* <button onClick={ () => {
+      <button onClick={ () => {
         let copy = 글제목;
         copy[0] = '여자 코트 추천'
         글제목변경(copy);
         console.log(copy == 글제목)
-      } }>글수정</button> */}
+      } }>글수정</button>
 
       {/* copy와 글제목의 화살표가 같아서 true, 따라서 state 변동 안됨 */}
-
-      <button onClick={ () => {
-        let copy = [...글제목];
-        copy[0] = '여자 코트 추천'
-        글제목변경(copy);
-      } }>글수정</button>
 
       {/* state변경함수 특징
       기존state == 신규state 의 경우 변경안함 */}
@@ -68,39 +66,76 @@ function App() {
       <button onClick={() => {
         let copy1 = [...글제목]; copy1.sort(); 글제목변경(copy1)}}>가나다순정렬</button>
 
-      <div className="list">
-        <h4>{post}</h4>
+      {/* <div className="list">
+        <h4 onClick = { () => { setModal(!modal) }} >{글제목[2]}</h4>
         <p>25년 12월 28일 발행</p>
-      </div>
+      </div> */}
 
-      <div className="list">
-        <h4>{ 글제목[0] } <button onClick={ ()=> { 추천변경(추천+1) }}> 👍 </button> {추천}  </h4>
-        <p>25년 12월 28일 발행</p>
-      </div>
-
-      <div className="list">
-        <h4>{글제목[1]}</h4>
-        <p>25년 12월 28일 발행</p>
-      </div>
-
-      <div className="list">
-        <h4>{글제목[2]}</h4>
-        <p>25년 12월 28일 발행</p>
-      </div>
-
-      <Modal></Modal>
+      {/* !modal을 이용해 스위치처럼 사용한다는 생각을 못했다, ! not으로 반전의미 */}
 
       
+      
+      {/* <div>
+        <h1>카운터 : {counter}</h1>
+        <button onClick={ () => counterChange(counter + 1 )}>+</button>
+      </div> */}
+
+      {
+        글제목.map(function(a, i){
+        return (
+      <div className="list" key={i}>
+        <h4 onClick={() => {setModal(!modal); setTitle(i) }}>
+          {글제목[i]}
+          <button onClick={ (e)=> { e.stopPropagation()
+            let copy = [...추천];
+            copy[i]=copy[i]+1;
+            추천변경(copy)
+          }}> 👍 </button> {추천[i]}
+        </h4>
+        <p>25년 12월 28일 발행</p>
+        <button onClick = { () => {
+          let copy = [...글제목];
+          copy.splice(i, 1);
+          글제목변경(copy);
+        } }>삭제</button>
+      </div>
+        )
+      })
+      }
+
+      {/* 상위html로 퍼지는 이벤트 버블리을 막기위해 e.stopPropagation() */}
+
+      {/* map으로 반복문처럼 {}안에서 */}
+
+      <input onChange={(e)=> {
+        입력값변경(e.target.value);
+        console.log(입력값)
+        }}></input>
+
+        <button onClick ={ () => {
+          let copy = [...글제목];
+          copy.unshift(입력값);
+          글제목변경(copy)
+        } }>글발행</button>
+      {
+        modal == true ? <Modal title={title} color={'yellow'} 글제목={글제목} 글제목변경={글제목변경}/> : null
+      }
+
     </div>
   );
 }
 
-function Modal(){
+function Modal(props){
   return(
-    <div className="modal">
-        <h4>제목</h4>
+    <div className="modal" style={{background : props.color}}>
+        <h4>{props.글제목[props.title]}</h4>
         <p>날짜</p>
         <p>상세내용</p>
+        <button onClick ={ () => {
+          let copy = [...props.글제목]
+          copy[0]='여자 코트 추천'
+          props.글제목변경(copy)
+        } }>글수정</button>
       </div>
   )
 }
